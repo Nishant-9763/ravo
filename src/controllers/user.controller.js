@@ -44,12 +44,9 @@ const createUser = async function (req, res) {
   }
 };
 
-// module.exports = createUser;
-
 const getUser = async function (req, res) {
   try {
     let findData = await userModel.find();
-
     if (findData.length == 0) {
       return res.status(404).send({ status: false, error: "No data found" });
     }
@@ -58,6 +55,19 @@ const getUser = async function (req, res) {
     res.status(500).send({ status: false, error: error.message });
   }
 };
+
+const getUserById = async function (req,res){
+  try {
+    let findData = await userModel.findOne({_id:req.params._id})
+    if (Object.keys(findData).length === 0) {
+      return res.status(404).send({ status: false, error: "No data found" });
+    }
+    return res.status(200).send({ status: true, data: findData });
+  } catch (error) {
+    res.status(500).send({ status: false, error: error.message });
+  }
+}
+
 const loginUser = async function (req, res){
 try {
   const {mobile} = req.body;
@@ -83,7 +93,7 @@ const verifyOtp = async function (req,res){
     findUser.save()
     return res.status(200).send({ status: true, data: findUser, message:"OTP Match SuccessFully" });
   }else{
-    return res.status(400).send({ status: false, message: "Please Check Mobile NUmber and OTP",data:[] });
+    return res.status(400).send({ status: false, message: "Please Check Mobile Number and OTP",data:[] });
   }
   } catch (error) {
     res.status(500).send({ status: false, error: error.message });
@@ -94,4 +104,5 @@ module.exports.createUser = createUser;
 module.exports.getUser = getUser;
 module.exports.loginUser = loginUser;
 module.exports.verifyOtp = verifyOtp;
+module.exports.getUserById = getUserById;
 

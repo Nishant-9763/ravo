@@ -12,22 +12,9 @@ const upload = multer({ storage: storage });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(cors());
 
-// Your CORS configuration
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Methods",
-    "GET, POST, OPTIONS, PUT, PATCH, DELETE"
-  );
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "X-Requested-With,content-type"
-  );
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+// Use cors middleware
+app.use(cors());
 
 mongoose.set("strictQuery", true);
 mongoose
@@ -41,11 +28,10 @@ mongoose
   .catch((err) => console.log(err));
 
 // Route to handle file uploads
-
 app.post("/user", upload.any(), route);
 
 app.use("/", route);
 
-app.listen(process.env.PORT || 8000, function () {
-  console.log("Express app running on port " + (process.env.PORT || 8000));
+app.listen(process.env.PORT || 3000, function () {
+  console.log("Express app running on port " + (process.env.PORT || 3000));
 });
