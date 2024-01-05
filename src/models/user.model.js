@@ -8,9 +8,9 @@ const userSchema = mongoose.Schema(
     state: { type: String },
     notName: { type: String },
     selectedCargoVehicle: { type: String },
-    load:{type:String},
+    load: { type: String },
     selectedVehicleType: { type: String },
-    seat:{type:String},
+    seat: { type: String },
     selectedSeaterVehicle: { type: String },
     district: { type: String },
     town_taluka: { type: String },
@@ -37,7 +37,7 @@ const userSchema = mongoose.Schema(
       //   "forceTempoTraveller",
       // ],
     },
-    vechileNumber:{type:String},
+    vechileNo: { type: String },
     acStatus: { type: String }, // enum:["ac","nonAc"],
     // photos: [
     //   {
@@ -46,6 +46,7 @@ const userSchema = mongoose.Schema(
     // ],
     selectedImages: [String],
     des: { type: String },
+    title: { type: String },
     otp: { type: Number },
   },
   {
