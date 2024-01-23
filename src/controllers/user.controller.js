@@ -78,7 +78,8 @@ async function sendOTP(mobileNumber, otp) {
       sendOtpUrl,
       {
         route: "q",
-        message: `Your OTP is ${otp}. It is valid for 5 minutes. Do not share it with anyone.`,
+        //`Welcome to BookMyGadi! Your login code is: ${otp}. Keep it secure; don't share. Happy booking!`
+        message: `Welcome to BookMyGadi! Your login code is: ${otp}. Keep it secure; don't share. Happy booking!`,
         language: "english",
         flash: 0,
         numbers: mobileNumber,
@@ -90,10 +91,10 @@ async function sendOTP(mobileNumber, otp) {
       }
     );
 
-    console.log("success", response.data);
+    // console.log("success", response.data);
     // You can handle the response as needed
   } catch (error) {
-    console.error("error", error.response.data);
+    // console.error("error", error.response.data);
     // Handle errors
   }
 }
