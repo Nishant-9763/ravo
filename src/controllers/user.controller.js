@@ -1,11 +1,15 @@
 const userModel = require("../models/user.model");
 const cloudinary = require("cloudinary").v2;
+const axios = require("axios");
 
+// sms service //
+const apiKey = process.env.API_KEY_FAST2SMS;
+const sendOtpUrl = process.env.OTPURL;
 // Configuration  of "Cloudinary" //
 cloudinary.config({
-  cloud_name: "ddraawvgd",
-  api_key: 994722389161267,
-  api_secret: "aMWYV3cdQ0UkSqZAfM8ec98OPto",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 const createUser = async function (req, res) {
@@ -68,6 +72,32 @@ const getUserById = async function (req, res) {
   }
 };
 
+async function sendOTP(mobileNumber, otp) {
+  try {
+    const response = await axios.post(
+      sendOtpUrl,
+      {
+        route: "q",
+        message: `Your OTP is ${otp}. It is valid for 5 minutes. Do not share it with anyone.`,
+        language: "english",
+        flash: 0,
+        numbers: mobileNumber,
+      },
+      {
+        headers: {
+          authorization: apiKey,
+        },
+      }
+    );
+
+    console.log("success", response.data);
+    // You can handle the response as needed
+  } catch (error) {
+    console.error("error", error.response.data);
+    // Handle errors
+  }
+}
+
 const loginUser = async function (req, res) {
   try {
     const { mobile } = req.body;
@@ -81,15 +111,15 @@ const loginUser = async function (req, res) {
           { new: true }
         )
         .select({ otp: 1 });
+
+      await sendOTP(mobile, otp);
       return res.status(200).send({ status: true, data: saveUserOtp });
     } else {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "NO User Found With Moblie Number, Please Register New",
-          data: [],
-        });
+      return res.status(400).send({
+        status: false,
+        message: "No User Found With Moblie Number, Please Register New",
+        data: [],
+      });
     }
   } catch (error) {
     res.status(500).send({ status: false, error: error.message });
@@ -103,21 +133,17 @@ const verifyOtp = async function (req, res) {
     if (findUser && Object.keys(findUser).length > 0) {
       findUser.otp = null;
       findUser.save();
-      return res
-        .status(200)
-        .send({
-          status: true,
-          data: findUser,
-          message: "OTP Match SuccessFully",
-        });
+      return res.status(200).send({
+        status: true,
+        data: findUser,
+        message: "OTP Match SuccessFully",
+      });
     } else {
-      return res
-        .status(400)
-        .send({
-          status: false,
-          message: "Please Check Mobile Number and OTP",
-          data: [],
-        });
+      return res.status(400).send({
+        status: false,
+        message: "Please Check Mobile Number and OTP",
+        data: [],
+      });
     }
   } catch (error) {
     res.status(500).send({ status: false, error: error.message });

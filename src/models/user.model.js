@@ -16,36 +16,21 @@ const userSchema = mongoose.Schema(
     town_taluka: { type: String },
     vechileType: {
       type: String,
-      // enum: ["seater", "cargoVehicle"],
     },
-    notInList: {
+    notName: {
       type: String,
     },
     fuel: {
       type: String,
-      // enum: ["petrol", "diesel"],
     },
     fare: { type: String },
     vechileSeater: {
       type: String,
-      // enum: [
-      //   "swift",
-      //   "ertiga",
-      //   "toyataInnova",
-      //   "bolero",
-      //   "traxCruiser",
-      //   "forceTempoTraveller",
-      // ],
     },
     vechileNo: { type: String },
-    acStatus: { type: String }, // enum:["ac","nonAc"],
-    // photos: [
-    //   {
-    //     url: { type: String,},
-    //   },
-    // ],
+    acStatus: { type: String },
     selectedImages: [String],
-    des: { type: String },
+    desc: { type: String },
     title: { type: String },
     otp: { type: Number },
   },

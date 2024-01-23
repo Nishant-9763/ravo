@@ -1,4 +1,5 @@
 const express = require("express");
+require('dotenv').config();
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const multer = require("multer");
@@ -15,11 +16,11 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Use cors middleware
 app.use(cors());
-
+console.log("test....................",process.env.DB_URL);
 mongoose.set("strictQuery", true);
 mongoose
   .connect(
-    "mongodb+srv://Nishant:Kh8cI13BDxDiuUHh@cluster0.k0s0qbw.mongodb.net/ravoProject",
+    process.env.DB_URL,
     {
       useNewUrlParser: true,
     }
