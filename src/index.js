@@ -16,7 +16,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 // Use cors middleware
 app.use(cors());
-console.log("test....................",process.env.DB_URL);
 mongoose.set("strictQuery", true);
 mongoose
   .connect(

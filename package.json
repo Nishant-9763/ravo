@@ -8,8 +8,8 @@
     "dev": "node src/index.js"
   },
   "engines": {
-    "npm":">=8.0.0 <9.6.4",
-    "node": ">=16.0.0 <17.0.0"
+    "npm": ">=9.0.0 <10.6.4",
+    "node": ">=18.0.0 <19.0.0"
   },
   "keywords": [],
   "author": "",
@@ -19,6 +19,7 @@
     "api": "^6.1.1",
     "cloudinary": "^1.41.0",
     "cors": "^2.8.5",
+    "dotenv": "^16.3.2",
     "express": "^4.18.2",
     "fast-two-sms": "^3.0.0",
     "mongoose": "^8.0.0",
