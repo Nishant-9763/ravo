@@ -1,4 +1,5 @@
 const userModel = require("../models/user.model");
+const userOtp = require("../models/userOtp.model");
 const cloudinary = require("cloudinary").v2;
 const axios = require("axios");
 
@@ -79,7 +80,7 @@ async function sendOTP(mobileNumber, otp) {
       {
         route: "q",
         //`Welcome to BookMyGadi! Your login code is: ${otp}. Keep it secure; don't share. Happy booking!`
-        message: `Welcome to BookMyGadi! Your login code is: ${otp}. Keep it secure; don't share. Happy booking!`,
+        message: `Welcome to BookMyGadi! Your login code is: ${otp}. Keep it secure; don't share with Anyone. Happy booking!`,
         language: "english",
         flash: 0,
         numbers: mobileNumber,
@@ -94,6 +95,7 @@ async function sendOTP(mobileNumber, otp) {
     // console.log("success", response.data);
     // You can handle the response as needed
   } catch (error) {
+    res.status(500).send({ status: false, error: error.message });
     // console.error("error", error.response.data);
     // Handle errors
   }
@@ -127,16 +129,28 @@ const loginUser = async function (req, res) {
   }
 };
 
+const requestOtp = async function (req, res) {
+  try {
+    const { mobile } = req.body;
+    const otp = Math.floor(100000 + Math.random() * 900000);
+    await sendOTP(mobile, otp);
+    await userOtp.create({ mobile, otp });
+    return res.status(200).send({ status: true, data: otp });
+  } catch (error) {
+    res.status(500).send({ status: false, error: error.message });
+  }
+};
+
 const verifyOtp = async function (req, res) {
   try {
     const { mobile, otp } = req.body;
-    const findUser = await userModel.findOne({ mobile: mobile, otp: otp });
+    const findUser = await userOtp.findOne({ mobile: mobile, otp: otp });
     if (findUser && Object.keys(findUser).length > 0) {
       findUser.otp = null;
       findUser.save();
       return res.status(200).send({
         status: true,
-        data: findUser,
+        // data: findUser,
         message: "OTP Match SuccessFully",
       });
     } else {
@@ -154,5 +168,6 @@ const verifyOtp = async function (req, res) {
 module.exports.createUser = createUser;
 module.exports.getUser = getUser;
 module.exports.loginUser = loginUser;
+module.exports.requestOtp = requestOtp;
 module.exports.verifyOtp = verifyOtp;
 module.exports.getUserById = getUserById;

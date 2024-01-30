@@ -6,6 +6,7 @@ router.post("/user", userController.createUser);
 router.get("/users", userController.getUser);
 router.get("/users/:_id", userController.getUserById);
 router.post("/loginUser", userController.loginUser);
+router.post("/requestOtp", userController.requestOtp);
 router.post("/verifyOtp", userController.verifyOtp);
 
 module.exports = router;
